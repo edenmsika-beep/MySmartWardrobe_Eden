@@ -1,0 +1,81 @@
+@page "/register"
+@rendermode InteractiveServer
+
+<PageTitle>הרשמה | MySmartWardrobe</PageTitle>
+
+<section class="auth-section py-3 py-md-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-5">
+                <a href="/" class="btn btn-outline-primary btn-sm mb-3">→ חזרה הביתה</a>
+
+                <div class="win">
+                    <div class="win-title">
+                        <span>♥ הרשמה <span class="title-en" dir="ltr">(register.exe)</span></span>
+                        <span class="win-btns" aria-hidden="true"><span>_</span><span>□</span><span>×</span></span>
+                    </div>
+                    <div class="win-body p-4 p-md-5">
+                        <img src="@Assets["images/item-white-dress.jpg"]" alt="שמלה לבנה על קולב" class="auth-img d-block mx-auto mb-3" />
+                        <h1 class="h2 mb-4 text-center">פותחים ארון חדש ✨</h1>
+
+                        @if (done)
+                        {
+                            <div class="win-msg text-center">
+                                <p class="mb-2">♥ איזה כיף שהצטרפת, <strong>@username</strong>!</p>
+                                <a href="/" class="btn btn-primary">לדף הבית</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <form @onsubmit="SignUp">
+                                <Field Id="reg-username" Label="שם משתמש" Placeholder="למשל eden_style"
+                                       @bind-Value="username" Error="@usernameError" />
+                                <Field Id="reg-email" Label="אימייל" Type="email" Dir="ltr" Placeholder="name@example.com"
+                                       @bind-Value="email" Error="@emailError" />
+                                <Field Id="reg-password" Label="סיסמה" Type="password" Dir="ltr"
+                                       @bind-Value="password" Error="@passwordError" />
+                                <Field Id="reg-confirm" Label="אימות סיסמה" Type="password" Dir="ltr"
+                                       @bind-Value="confirm" Error="@confirmError" />
+
+                                <button type="submit" class="btn btn-primary btn-lg w-100 mt-2">♥ נרשמים</button>
+                            </form>
+
+                            <p class="text-center small mt-4 mb-0">
+                                כבר יש לך חשבון? <a href="/login" class="fw-semibold">כניסה</a>
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    // מה שהמשתמש הקליד
+    private string username = "";
+    private string email = "";
+    private string password = "";
+    private string confirm = "";
+
+    // הודעת שגיאה לכל שדה
+    private string usernameError = "";
+    private string emailError = "";
+    private string passwordError = "";
+    private string confirmError = "";
+
+    // true אחרי הרשמה מוצלחת
+    private bool done = false;
+
+    private void SignUp()
+    {
+        usernameError = username.Trim().Length < 3 ? "לפחות 3 תווים" : "";
+        emailError = !email.Contains('@') || !email.Contains('.') ? "האימייל הזה לא נראה תקין" : "";
+        passwordError = password.Length < 6 ? "לפחות 6 תווים" : "";
+        confirmError = confirm != password ? "הסיסמאות לא תואמות" : "";
+
+        // אין שגיאות -> מציגים הודעת הצלחה
+        // (בגרסה הבאה כאן שולחים את הנתונים ל-API)
+        done = usernameError == "" && emailError == "" && passwordError == "" && confirmError == "";
+    }
+}

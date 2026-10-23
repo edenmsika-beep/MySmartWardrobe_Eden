@@ -1,0 +1,213 @@
+﻿@page "/"
+
+<PageTitle>MySmartWardrobe ♥ הארון החכם שלך</PageTitle>
+
+<div class="container-xl">
+    <div class="row g-3">
+
+        @* ===== עמודה צדדית: הלוק של היום, הארון והתפריט ===== *@
+        <aside class="col-lg-3">
+            <div class="win mb-3">
+                <div class="win-title"><span>♥ הלוק של היום</span></div>
+                <div class="win-body p-2">
+                    <img src="@Assets["images/look-polka-dot.jpg"]" alt="לוח לוק: חולצה ורודה עם נקודות, חצאית מלמלה, גרביים לבנות ונעלי בלט" class="img-fluid w-100" />
+                </div>
+            </div>
+
+            <div class="win mb-3">
+                <div class="win-body">
+                    <p class="profile-name mb-1" dir="ltr">eden.style</p>
+                    <p class="small mb-3">♥ הארון שלי</p>
+                    <div class="d-flex align-items-center gap-2 mb-2 small">
+                        <span class="w-label">חולצות</span>
+                        <div class="progress flex-grow-1" role="progressbar" aria-label="חולצות" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar" style="width: 45%"></div>
+                        </div>
+                        <span class="num">19</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 mb-2 small">
+                        <span class="w-label">חצאיות</span>
+                        <div class="progress flex-grow-1" role="progressbar" aria-label="חצאיות" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar" style="width: 30%"></div>
+                        </div>
+                        <span class="num">13</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 small">
+                        <span class="w-label">נעליים</span>
+                        <div class="progress flex-grow-1" role="progressbar" aria-label="נעליים" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar" style="width: 24%"></div>
+                        </div>
+                        <span class="num">10</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="side-menu d-flex flex-column gap-2" aria-label="ניווט בדף">
+                <a href="/" class="side-btn active">⌂ בית</a>
+                <a href="#closet" class="side-btn">♥ הארון שלי</a>
+                <a href="#board" class="side-btn">★ השראה</a>
+                <a href="#steps" class="side-btn">☰ איך זה עובד <span class="side-count">4</span></a>
+            </nav>
+        </aside>
+
+        @* ===== העמודה הראשית ===== *@
+        <div class="col-lg-9">
+
+            @* ===== 1. פתיחה ===== *@
+            <section class="win mb-3">
+                <div class="win-title">
+                    <span>♥ ברוכים הבאים <span class="title-en" dir="ltr">(welcome.exe)</span></span>
+                    <span class="win-btns" aria-hidden="true"><span>_</span><span>□</span><span>×</span></span>
+                </div>
+                <div class="win-body p-4 p-md-5">
+                    <div class="row align-items-center g-4">
+                        <div class="col-md-7">
+                            <p class="kicker mb-2">♥ הארון הווירטואלי שלך ♥</p>
+                            <h1 class="display-5 mb-3">כל הבגדים שלך. <span class="hl">לוק אחד</span> בכל פעם.</h1>
+                            <p class="lead mb-4">ביי ביי ל"אין לי מה ללבוש" 💅</p>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="/register" class="btn btn-primary btn-lg">♥ יאללה, נרשמים</a>
+                                <a href="/login" class="btn btn-outline-primary btn-lg">יש לי כבר חשבון</a>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <figure class="polaroid position-relative mb-0">
+                                <img src="@Assets["images/hero-styling.jpg"]" alt="איור של בחורה שמרכיבה לוקים על בובות תדמית" class="img-fluid" />
+                                <figcaption>מרכיבים לוק ♥</figcaption>
+                                <span class="sticker position-absolute top-0 start-0" dir="ltr">NEW!</span>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            @* ===== 2. הפריטים בארון ===== *@
+            <section id="closet" class="win mb-3">
+                <div class="win-title">
+                    <span>♥ הארון שלי <span class="title-en" dir="ltr">(my_items)</span></span>
+                    <span class="win-btns" aria-hidden="true"><span>«</span><span>‹</span><span>›</span><span>»</span></span>
+                </div>
+                <div class="win-body">
+                    <div class="row g-3">
+                        <div class="col-6 col-md-3">
+                            <div class="item-card h-100">
+                                <div class="item-head" dir="ltr"><span>my/striped-cami</span><span class="dots">···</span></div>
+                                <div class="ratio ratio-1x1">
+                                    <img src="@Assets["images/item-striped-cami.jpg"]" alt="גופייה ורודה עם פסים" class="object-fit-cover" />
+                                </div>
+                                <div class="item-body">
+                                    <p class="mb-1">פסים ורודים = קיץ ☀</p>
+                                    <p class="item-meta mb-0"><span class="star">★</span> 4.8 · קיץ</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="item-card h-100">
+                                <div class="item-head" dir="ltr"><span>my/polka-bag</span><span class="dots">···</span></div>
+                                <div class="ratio ratio-1x1">
+                                    <img src="@Assets["images/item-polka-bag.jpg"]" alt="תיק ורוד עם נקודות ופס חום" class="object-fit-cover" />
+                                </div>
+                                <div class="item-body">
+                                    <p class="mb-1">הולך עם הכל, באמת</p>
+                                    <p class="item-meta mb-0"><span class="star">★</span> 4.9 · כל השנה</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="item-card h-100">
+                                <div class="item-head" dir="ltr"><span>my/white-dress</span><span class="dots">···</span></div>
+                                <div class="ratio ratio-1x1">
+                                    <img src="@Assets["images/item-white-dress.jpg"]" alt="שמלה לבנה על קולב" class="object-fit-cover" />
+                                </div>
+                                <div class="item-body">
+                                    <p class="mb-1">לבנה. פשוטה. מושלמת.</p>
+                                    <p class="item-meta mb-0"><span class="star">★</span> 4.7 · אביב</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="item-card h-100">
+                                <div class="item-head" dir="ltr"><span>my/shoe-shelf</span><span class="dots">···</span></div>
+                                <div class="ratio ratio-1x1">
+                                    <img src="@Assets["images/item-shoe-closet.jpg"]" alt="ארון נעליים ורוד עם מגפיים ועקבים" class="object-fit-cover" />
+                                </div>
+                                <div class="item-body">
+                                    <p class="mb-1">המדף הכי שווה בבית</p>
+                                    <p class="item-meta mb-0"><span class="star">★</span> 5.0 · כל השנה</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            @* ===== 3. לוח השראה בסגנון פינטרסט ===== *@
+            <section id="board" class="win mb-3">
+                <div class="win-title">
+                    <span>♥ השראה <span class="title-en" dir="ltr">(what's hot)</span></span>
+                    <span class="win-btns" aria-hidden="true"><span>_</span><span>□</span><span>×</span></span>
+                </div>
+                <div class="win-body">
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span class="pill pill-on">הכל</span>
+                        <span class="pill">יומיומי</span>
+                        <span class="pill">קיץ</span>
+                        <span class="pill">אקססוריז</span>
+                    </div>
+                    <div class="pin-board">
+                        <figure class="pin">
+                            <img src="@Assets["images/pin-summer-looks.jpg"]" alt="איור של שלושה לוקים של קיץ בוורוד, ירוק וכתום" />
+                            <figcaption><strong>3 לוקים לקיץ ☀</strong><span dir="ltr">@@noa.k · ★★★★★</span></figcaption>
+                        </figure>
+                        <figure class="pin">
+                            <img src="@Assets["images/pin-real-closet.jpg"]" alt="צילום של ארון אמיתי עם חולצות בנקודות ומשבצות" />
+                            <figcaption><strong>הארון האמיתי (בלי פילטר)</strong><span dir="ltr">@@eden · ★★★★★</span></figcaption>
+                        </figure>
+                        <figure class="pin">
+                            <img src="@Assets["images/pin-denim-days.jpg"]" alt="איור של שני לוקים עם ג'ינס ומגפיים" />
+                            <figcaption><strong>ג'ינס של שנות ה-2000</strong><span dir="ltr">@@shira_h · ★★★★★</span></figcaption>
+                        </figure>
+                        <figure class="pin">
+                            <img src="@Assets["images/pin-thread-spool.jpg"]" alt="איור בצבעי מים של סליל חוט ורוד" />
+                            <figcaption><strong>לתקן, לא לזרוק</strong><span dir="ltr">@@lior.m · ★★★★</span></figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </section>
+
+            <div class="row g-3">
+                @* ===== 4. איך זה עובד ===== *@
+                <div class="col-md-7">
+                    <section id="steps" class="win h-100">
+                        <div class="win-title"><span>♥ איך זה עובד <span class="title-en" dir="ltr">(how_to.txt)</span></span></div>
+                        <div class="win-body p-0">
+                            <ol class="list-rows list-unstyled mb-0">
+                                <li><span class="step-num">1</span><div><strong>נרשמים</strong></div></li>
+                                <li><span class="step-num">2</span><div><strong>ממלאים את הארון</strong></div></li>
+                                <li><span class="step-num">3</span><div><strong>מרכיבים לוקים</strong></div></li>
+                                <li><span class="step-num">4</span><div><strong>מוצאים השראה</strong></div></li>
+                            </ol>
+                        </div>
+                    </section>
+                </div>
+
+                @* ===== 5. הזמנה - עם רקע העיגולים ===== *@
+                <div class="col-md-5">
+                    <section class="win h-100 cta-win">
+                        <div class="win-title"><span>♥ מוכנים? <span class="title-en" dir="ltr">(install_look)</span></span></div>
+                        <div class="win-body d-flex align-items-center justify-content-center p-4">
+                            <div class="cta-card text-center">
+                                <h2 class="h4 mb-3">הארון שלך מחכה לך ♥</h2>
+                                <div class="d-flex flex-wrap justify-content-center gap-2">
+                                    <a href="/register" class="btn btn-primary">♥ להרשמה</a>
+                                    <a href="/login" class="btn btn-outline-primary">כניסה</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

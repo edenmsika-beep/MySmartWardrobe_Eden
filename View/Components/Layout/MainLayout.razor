@@ -1,0 +1,43 @@
+﻿@inherits LayoutComponentBase
+
+<div class="desktop d-flex flex-column min-vh-100">
+
+    @* סרגל עליון: נראה כמו פס כותרת של מחשב משנות ה-2000 *@
+    <header class="site-header sticky-top">
+        <div class="container-xl d-flex justify-content-between align-items-center gap-2 py-2">
+            <Logo />
+            <nav class="d-flex align-items-center gap-2">
+                <a href="/login" class="btn btn-outline-primary btn-sm d-none d-sm-inline-block">כניסה</a>
+                <a href="/register" class="btn btn-primary btn-sm">הרשמה</a>
+                <button type="button" class="btn btn-outline-primary btn-sm theme-toggle" onclick="toggleTheme()"
+                        aria-label="מעבר בין מצב יום ולילה" title="יום / לילה">
+                    <span class="theme-night">☾</span>
+                    <span class="theme-day">☀</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow-1 py-3 py-md-4">
+        @Body
+    </main>
+
+    @* סרגל תחתון: נראה כמו שורת המשימות של המחשב *@
+    <footer class="taskbar">
+        <div class="container-xl d-flex flex-wrap justify-content-between align-items-center gap-2 py-2">
+            <a href="/" class="task-start" dir="ltr">♥ MYSMARTWARDROBE ♥</a>
+            <nav class="d-flex flex-wrap gap-2">
+                <a href="/register" class="task-btn">♥ ארון חדש</a>
+                <a href="/login" class="task-btn">♥ כניסה</a>
+                <a href="/" class="task-btn d-none d-md-inline-block">♥ השראה</a>
+            </nav>
+            <span class="task-tray">פרויקט גמר ♥</span>
+        </div>
+    </footer>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    אופס, משהו השתבש.
+    <a href="." class="reload">רענון</a>
+    <span class="dismiss">✕</span>
+</div>

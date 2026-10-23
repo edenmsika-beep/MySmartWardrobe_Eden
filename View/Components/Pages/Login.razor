@@ -1,0 +1,71 @@
+@page "/login"
+@rendermode InteractiveServer
+
+<PageTitle>כניסה | MySmartWardrobe</PageTitle>
+
+<section class="auth-section py-3 py-md-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-5">
+                <a href="/" class="btn btn-outline-primary btn-sm mb-3">→ חזרה הביתה</a>
+
+                <div class="win">
+                    <div class="win-title">
+                        <span>♥ כניסה <span class="title-en" dir="ltr">(login.exe)</span></span>
+                        <span class="win-btns" aria-hidden="true"><span>_</span><span>□</span><span>×</span></span>
+                    </div>
+                    <div class="win-body p-4 p-md-5">
+                        <img src="@Assets["images/item-shoe-closet.jpg"]" alt="ארון נעליים ורוד" class="auth-img d-block mx-auto mb-3" />
+                        <h1 class="h2 mb-4 text-center">התגעגענו ♥</h1>
+
+                        @if (done)
+                        {
+                            <div class="win-msg text-center">
+                                <p class="mb-2">♥ היי <strong>@username</strong>, איזה כיף לראות אותך!</p>
+                                <a href="/" class="btn btn-primary">לדף הבית</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <form @onsubmit="LogIn">
+                                <Field Id="login-username" Label="שם משתמש"
+                                       @bind-Value="username" Error="@usernameError" />
+                                <Field Id="login-password" Label="סיסמה" Type="password" Dir="ltr"
+                                       @bind-Value="password" Error="@passwordError" />
+
+                                <button type="submit" class="btn btn-primary btn-lg w-100 mt-2">♥ כניסה</button>
+                            </form>
+
+                            <p class="text-center small mt-4 mb-0">
+                                פעם ראשונה פה? <a href="/register" class="fw-semibold">הרשמה</a>
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    // מה שהמשתמש הקליד
+    private string username = "";
+    private string password = "";
+
+    // הודעת שגיאה לכל שדה
+    private string usernameError = "";
+    private string passwordError = "";
+
+    // true אחרי כניסה מוצלחת
+    private bool done = false;
+
+    private void LogIn()
+    {
+        usernameError = username.Trim() == "" ? "שכחת את שם המשתמש" : "";
+        passwordError = password == "" ? "שכחת את הסיסמה" : "";
+
+        // אין שגיאות -> מציגים הודעת ברוכים הבאים
+        // (בגרסה הבאה כאן בודקים את המשתמש מול ה-API)
+        done = usernameError == "" && passwordError == "";
+    }
+}

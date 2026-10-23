@@ -1,0 +1,100 @@
+@API_HostAddress = http://localhost:5161
+
+GET {{API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+# ===== משתמשים =====
+
+# כל המשתמשים
+GET {{API_HostAddress}}/api/users
+Accept: application/json
+
+###
+
+# משתמש לפי מזהה
+GET {{API_HostAddress}}/api/users/1
+Accept: application/json
+
+###
+
+# האם שם מלא קיים
+GET {{API_HostAddress}}/api/users/exists/Daniel%20Cohen
+
+###
+
+# האם שם מלא קיים
+GET {{API_HostAddress}}/api/users/exists/Dana%20Staff
+
+###
+
+# האם אימייל קיים
+GET {{API_HostAddress}}/api/users/email-exists/admin@example.com
+
+###
+
+# ספירת משתמשים לפי תפקיד
+GET {{API_HostAddress}}/api/users/count-by-role
+
+###
+
+# הוספת משתמש בדיקה (תפקיד ברירת מחדל: Customer)
+POST {{API_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "fullName": "Test User",
+  "email": "test.user@example.com",
+  "password": "Test123!"
+}
+
+###
+
+# התחברות עם פרטים נכונים
+POST {{API_HostAddress}}/api/users/login
+Content-Type: application/json
+
+{
+  "fullName": "System Admin",
+  "password": "Test123!"
+}
+
+###
+
+# התחברות עם סיסמה שגויה
+POST {{API_HostAddress}}/api/users/login
+Content-Type: application/json
+
+{
+  "fullName": "System Admin",
+  "password": "wrong"
+}
+
+###
+
+# שינוי תפקיד של משתמש הבדיקה
+# יש להחליף את 11 במזהה שהוחזר בהוספת המשתמש
+PUT {{API_HostAddress}}/api/users/11/role?roleName=Staff
+
+###
+
+# עדכון סיסמה
+PUT {{API_HostAddress}}/api/users/11/password
+Content-Type: application/json
+
+"NewPass123!"
+
+###
+
+# עדכון אימייל
+PUT {{API_HostAddress}}/api/users/11/email
+Content-Type: application/json
+
+"new.test.user@example.com"
+
+###
+
+# מחיקת משתמש הבדיקה
+DELETE {{API_HostAddress}}/api/users/11
+
+###

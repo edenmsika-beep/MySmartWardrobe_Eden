@@ -1,0 +1,42 @@
+@* שדה טופס עם תווית. דוגמה:
+   <Field Id="reg-email" Label="אימייל" Type="email" Dir="ltr" @bind-Value="email" Error="@emailError" /> *@
+
+<div class="mb-3">
+    <label for="@Id" class="form-label fw-semibold">
+        @Label
+        @if (Required)
+        {
+            <span class="text-danger">*</span>
+        }
+    </label>
+    <input id="@Id" type="@Type" dir="@Dir" placeholder="@Placeholder"
+           class="form-control form-control-lg @(string.IsNullOrEmpty(Error) ? "" : "is-invalid")"
+           value="@Value" @oninput="OnInput" />
+    @if (!string.IsNullOrEmpty(Error))
+    {
+        <div class="invalid-feedback">@Error</div>
+    }
+</div>
+
+@code {
+    [Parameter] public string Id { get; set; } = "";
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public string Type { get; set; } = "text";
+    [Parameter] public string Dir { get; set; } = "rtl";
+    [Parameter] public string Placeholder { get; set; } = "";
+    [Parameter] public bool Required { get; set; } = true;
+
+    // הערך של השדה - עובד עם @bind-Value
+    [Parameter] public string Value { get; set; } = "";
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    // הודעת שגיאה מתחת לשדה (ריק = אין שגיאה)
+    [Parameter] public string Error { get; set; } = "";
+
+    // בכל הקלדה שולחים את הטקסט החדש בחזרה לדף
+    private async Task OnInput(ChangeEventArgs e)
+    {
+        Value = e.Value?.ToString() ?? "";
+        await ValueChanged.InvokeAsync(Value);
+    }
+}

@@ -1,0 +1,817 @@
+/* =========================================================
+   MySmartWardrobe - קובץ העיצוב שלנו
+   סגנון: מחשב משנות ה-2000 - חלונות עם מסגרות בולטות,
+   ורוד, שוקולד חום וירוק ליים, רקע פסים, גופן פיקסלים ולבבות.
+   נטען אחרי Bootstrap, ולכן גובר עליו.
+   1. צבעים וגופנים (מצב יום ומצב לילה)
+   2. כפתורים ושדות
+   3. סרגל עליון, לוגו ושורת משימות
+   4. חלונות ודברים מיוחדים לפרויקט
+   5. הודעת השגיאה של Blazor
+   ========================================================= */
+
+
+/* ---------- 1. צבעים וגופנים ---------- */
+
+/* מצב יום: ורוד, שוקולד חום וירוק ליים - כמו בתמונות ההשראה */
+:root,
+[data-bs-theme="light"] {
+    --ms-frame: #4a2c2a; /* מסגרת החלונות - שוקולד */
+    --ms-frame-rgb: 74, 44, 42;
+    --ms-title-1: #e8789f; /* פס הכותרת של חלון - ורוד */
+    --ms-title-2: #f4a9c4;
+    --ms-win: #fbd9e6; /* צבע החלון */
+    --ms-panel: #fffaf6; /* התוכן בתוך החלון - שמנת */
+    --ms-hi: #ffffff; /* צד מואר של המסגרת */
+    --ms-lo: #d79ab2; /* צד מוצל של המסגרת */
+    --ms-pink: #f07aa8; /* ורוד - כפתורים ולבבות */
+    --ms-pink-dark: #c9477f;
+    --ms-pink-soft: #ffe1ec;
+    --ms-lime: #c5d86d; /* ירוק ליים - צבע הדגשה */
+    --ms-lime-dark: #9fb447;
+    --ms-ink: #3d2422; /* צבע הטקסט - חום כהה */
+    --ms-muted: #7d5a5c;
+    --ms-btn: #fff3f7; /* כפתור משני */
+    --ms-side: #fff3f7; /* כפתורי התפריט הצדדי */
+    --ms-on-pink: #3d2422; /* טקסט על ורוד */
+    /* פסי הרקע */
+    --ms-stripe-1: #f9d0df;
+    --ms-stripe-2: #fdebf2;
+    --bs-primary: var(--ms-pink-dark);
+    --bs-primary-rgb: 201, 71, 127;
+    --bs-link-color: var(--ms-pink-dark);
+    --bs-link-color-rgb: 201, 71, 127;
+    --bs-link-hover-color: var(--ms-frame);
+    --bs-link-hover-color-rgb: var(--ms-frame-rgb);
+    --bs-body-color: var(--ms-ink);
+    --bs-body-color-rgb: 61, 36, 34;
+    --bs-body-bg: var(--ms-stripe-2);
+    --bs-secondary-color: var(--ms-muted);
+    --bs-border-color: var(--ms-lo);
+    --bs-body-font-family: 'Rubik', system-ui, sans-serif;
+    --bs-border-radius: 4px;
+}
+
+/* מצב לילה: שוקולד כהה עם ורוד וליים */
+[data-bs-theme="dark"] {
+    --ms-frame: #120a0a;
+    --ms-frame-rgb: 18, 10, 10;
+    --ms-title-1: #8e3a63;
+    --ms-title-2: #b9567f;
+    --ms-win: #3a2427;
+    --ms-panel: #2a1a1d;
+    --ms-hi: #6a4048;
+    --ms-lo: #1a0f11;
+    --ms-pink: #f48fb8;
+    --ms-pink-dark: #ffa8cb;
+    --ms-pink-soft: #4d2635;
+    --ms-lime: #b8cf5a;
+    --ms-lime-dark: #9fb447;
+    --ms-ink: #fbe9f0;
+    --ms-muted: #d4b3bf;
+    --ms-btn: #4a2d33;
+    --ms-side: #4a2d33;
+    --ms-on-pink: #2a1a1d;
+    --ms-stripe-1: #2b1b1d;
+    --ms-stripe-2: #33211f;
+    --bs-primary: var(--ms-pink);
+    --bs-primary-rgb: 244, 143, 184;
+    --bs-link-color: var(--ms-pink);
+    --bs-link-color-rgb: 244, 143, 184;
+    --bs-link-hover-color: #ffffff;
+    --bs-link-hover-color-rgb: 255, 255, 255;
+    --bs-body-color: var(--ms-ink);
+    --bs-body-color-rgb: 251, 233, 240;
+    --bs-body-bg: var(--ms-stripe-2);
+    --bs-secondary-color: var(--ms-muted);
+    --bs-border-color: var(--ms-lo);
+}
+
+/* רקע הדף: פסים ורודים ולבנים, כמו נייר עטיפה של חנות בגדים */
+body {
+    font-family: var(--bs-body-font-family);
+    color: var(--ms-ink);
+    background-color: var(--ms-stripe-2);
+    background-image: repeating-linear-gradient(90deg, var(--ms-stripe-1) 0 26px, var(--ms-stripe-2) 26px 52px);
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6,
+.display-5 {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 800;
+    color: var(--ms-ink);
+    line-height: 1.15;
+}
+
+    h1:focus {
+        outline: none;
+    }
+
+.lead {
+    font-size: 1.1rem;
+}
+
+.text-secondary {
+    color: var(--ms-muted) !important;
+}
+
+.text-primary {
+    color: var(--ms-pink-dark) !important;
+}
+
+
+/* ---------- 2. כפתורים ושדות ---------- */
+
+/* כפתור "בולט" כמו במחשב ישן: צד מואר למעלה, צד מוצל למטה */
+.btn {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 700;
+    border-radius: 4px;
+    border: 2px solid var(--ms-frame);
+    box-shadow: inset 2px 2px 0 rgba(255, 255, 255, .75), inset -2px -2px 0 rgba(0, 0, 0, .2);
+    transition: none;
+}
+
+    /* כשלוחצים - הכפתור "שוקע" */
+    .btn:active {
+        box-shadow: inset -2px -2px 0 rgba(255, 255, 255, .5), inset 2px 2px 0 rgba(0, 0, 0, .25) !important;
+        transform: translate(1px, 1px);
+    }
+
+.btn-primary {
+    --bs-btn-color: var(--ms-on-pink);
+    --bs-btn-bg: var(--ms-pink);
+    --bs-btn-border-color: var(--ms-frame);
+    --bs-btn-hover-color: var(--ms-on-pink);
+    --bs-btn-hover-bg: #ff8dc0;
+    --bs-btn-hover-border-color: var(--ms-frame);
+    --bs-btn-active-color: var(--ms-on-pink);
+    --bs-btn-active-bg: var(--ms-pink-dark);
+    --bs-btn-active-border-color: var(--ms-frame);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--ms-ink);
+    --bs-btn-bg: var(--ms-btn);
+    --bs-btn-border-color: var(--ms-frame);
+    --bs-btn-hover-color: var(--ms-ink);
+    --bs-btn-hover-bg: var(--ms-panel);
+    --bs-btn-hover-border-color: var(--ms-frame);
+    --bs-btn-active-color: var(--ms-ink);
+    --bs-btn-active-bg: var(--ms-win);
+    --bs-btn-active-border-color: var(--ms-frame);
+}
+
+[data-bs-theme="dark"] .btn-outline-primary {
+    box-shadow: inset 2px 2px 0 rgba(255, 255, 255, .2), inset -2px -2px 0 rgba(0, 0, 0, .35);
+}
+
+.btn:focus-visible {
+    outline: 2px dashed var(--ms-pink);
+    outline-offset: 2px;
+}
+
+.form-label {
+    font-weight: 700;
+}
+
+/* שדה "שקוע" כמו בטופס של מחשב ישן */
+.form-control {
+    background-color: #ffffff;
+    color: #3d2422;
+    border: 2px solid;
+    border-color: var(--ms-lo) var(--ms-hi) var(--ms-hi) var(--ms-lo);
+    border-radius: 2px;
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .15);
+}
+
+[data-bs-theme="dark"] .form-control {
+    background-color: #1a0f11;
+    color: #fbe9f0;
+}
+
+.form-control::placeholder {
+    color: var(--ms-muted);
+}
+
+.form-control:focus {
+    background-color: #ffffff;
+    color: #3d2422;
+    border-color: var(--ms-pink-dark);
+    box-shadow: 0 0 0 3px var(--ms-pink-soft);
+}
+
+[data-bs-theme="dark"] .form-control:focus {
+    background-color: #1a0f11;
+    color: #fbe9f0;
+}
+
+.form-control-lg {
+    font-size: 1rem;
+}
+
+/* שדות באנגלית (אימייל וסיסמה): ה-placeholder מיושר לימין כמו שאר הטופס */
+.form-control[dir="ltr"] {
+    text-align: right;
+}
+
+    .form-control[dir="ltr"]:not(:placeholder-shown) {
+        text-align: left;
+    }
+
+.text-danger {
+    color: var(--ms-pink-dark) !important;
+}
+
+/* שדה עם שגיאה */
+.form-control.is-invalid {
+    border-color: #e0245e;
+}
+
+.invalid-feedback {
+    font-weight: 700;
+    color: #e0245e;
+}
+
+/* ההודעה שמופיעה אחרי הרשמה / כניסה */
+.win-msg {
+    background-color: var(--ms-pink-soft);
+    border: 2px dashed var(--ms-pink);
+    border-radius: 4px;
+    padding: 1rem;
+    font-weight: 500;
+}
+
+/* הודעות האימות של טפסי Blazor */
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid #e0245e;
+}
+
+.validation-message {
+    color: #e0245e;
+}
+
+
+/* ---------- 3. סרגל עליון, לוגו ושורת משימות ---------- */
+
+.site-header {
+    background: linear-gradient(180deg, var(--ms-title-1), var(--ms-title-2));
+    border-bottom: 3px solid var(--ms-frame);
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, .35);
+    z-index: 1030;
+}
+
+/* הלוגו: אותיות פיקסלים בתוך "תווית" כהה */
+.logo-name {
+    font-family: 'Silkscreen', monospace;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: .04em;
+    color: #ffffff;
+    background-color: var(--ms-on-pink);
+    border: 2px solid #ffffff;
+    outline: 2px solid var(--ms-frame);
+    border-radius: 3px;
+    padding: .2rem .7rem;
+    white-space: nowrap;
+}
+
+.logo-heart {
+    color: var(--ms-pink);
+}
+
+.logo-tag {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    color: #ffffff;
+    text-shadow: 1px 1px 0 var(--ms-frame);
+}
+
+@media (max-width: 400px) {
+    .logo-name {
+        font-size: .8rem;
+        padding: .2rem .45rem;
+    }
+}
+
+.theme-toggle {
+    min-width: 2.3rem;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+    .theme-toggle .theme-day {
+        display: none;
+    }
+
+[data-bs-theme="dark"] .theme-toggle .theme-day {
+    display: inline;
+}
+
+[data-bs-theme="dark"] .theme-toggle .theme-night {
+    display: none;
+}
+
+/* שורת המשימות בתחתית */
+.taskbar {
+    background: linear-gradient(180deg, var(--ms-title-1), var(--ms-title-2));
+    border-top: 3px solid var(--ms-frame);
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, .35);
+}
+
+.task-start,
+.task-btn,
+.task-tray {
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--ms-ink);
+    background-color: var(--ms-btn);
+    border: 2px solid var(--ms-frame);
+    border-radius: 3px;
+    padding: .25rem .7rem;
+    text-decoration: none;
+    box-shadow: inset 2px 2px 0 rgba(255, 255, 255, .7), inset -2px -2px 0 rgba(0, 0, 0, .2);
+}
+
+.task-start {
+    font-family: 'Silkscreen', monospace;
+    background-color: var(--ms-on-pink);
+    color: #ffffff;
+}
+
+    .task-start:hover,
+    .task-btn:hover {
+        color: var(--ms-pink-dark);
+    }
+
+.task-tray {
+    font-family: 'Rubik', sans-serif;
+    box-shadow: inset 2px 2px 0 rgba(0, 0, 0, .2), inset -2px -2px 0 rgba(255, 255, 255, .6);
+}
+
+
+/* ---------- 4. חלונות ודברים מיוחדים לפרויקט ---------- */
+
+/* ===== חלון ===== */
+.win {
+    background-color: var(--ms-win);
+    border: 3px solid var(--ms-frame);
+    border-radius: 6px;
+    box-shadow: inset 2px 2px 0 var(--ms-hi), inset -2px -2px 0 var(--ms-lo), 5px 5px 0 rgba(0, 0, 0, .28);
+    padding: 3px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* פס הכותרת של החלון */
+.win-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .5rem;
+    background: linear-gradient(180deg, var(--ms-title-1), var(--ms-title-2));
+    color: #ffffff;
+    font-weight: 700;
+    font-size: .95rem;
+    padding: .3rem .6rem;
+    border: 2px solid var(--ms-frame);
+    border-radius: 3px;
+    text-shadow: 1px 1px 0 var(--ms-frame);
+}
+
+    /* הלב שבתחילת כל כותרת חלון */
+    .win-title > span:first-child::first-letter {
+        color: #ffffff;
+    }
+
+[data-bs-theme="dark"] .win-title > span:first-child::first-letter {
+    color: var(--ms-pink-dark);
+}
+
+.title-en {
+    font-family: 'Silkscreen', monospace;
+    font-weight: 400;
+    font-size: .75rem;
+    opacity: .85;
+}
+
+/* הכפתורים הקטנים בפינת החלון (רק לקישוט) */
+.win-btns {
+    display: flex;
+    gap: 3px;
+}
+
+    .win-btns span {
+        width: 1.35rem;
+        height: 1.25rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Silkscreen', monospace;
+        font-size: .7rem;
+        line-height: 1;
+        color: var(--ms-ink);
+        background-color: var(--ms-btn);
+        border: 2px solid var(--ms-frame);
+        border-radius: 2px;
+        box-shadow: inset 1px 1px 0 #fff;
+        text-shadow: none;
+    }
+
+/* התוכן של החלון - "שקוע" בתוך המסגרת */
+.win-body {
+    flex-grow: 1;
+    background-color: var(--ms-panel);
+    margin-top: 4px;
+    padding: 1rem;
+    border: 2px solid;
+    border-color: var(--ms-lo) var(--ms-hi) var(--ms-hi) var(--ms-lo);
+    border-radius: 3px;
+}
+
+/* ===== עמודה צדדית ===== */
+.profile-name {
+    font-family: 'Silkscreen', monospace;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--ms-ink);
+}
+
+.side-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    color: var(--ms-ink);
+    text-decoration: none;
+    background-color: var(--ms-side);
+    border: 2px solid var(--ms-frame);
+    border-radius: 4px;
+    padding: .55rem .9rem;
+    box-shadow: inset 2px 2px 0 rgba(255, 255, 255, .8), inset -2px -2px 0 rgba(0, 0, 0, .18), 3px 3px 0 rgba(0, 0, 0, .25);
+}
+
+[data-bs-theme="dark"] .side-btn {
+    background-color: var(--ms-btn);
+    box-shadow: inset 2px 2px 0 rgba(255, 255, 255, .2), inset -2px -2px 0 rgba(0, 0, 0, .35), 3px 3px 0 rgba(0, 0, 0, .35);
+}
+
+.side-btn:hover {
+    color: var(--ms-pink-dark);
+}
+
+.side-btn.active {
+    background: linear-gradient(180deg, var(--ms-title-1), var(--ms-title-2));
+    color: #ffffff;
+}
+
+.side-count {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    background-color: var(--ms-lime);
+    color: var(--ms-on-pink);
+    border: 2px solid var(--ms-frame);
+    border-radius: 2px;
+    padding: 0 .4rem;
+    line-height: 1.1;
+}
+
+/* פסי התקדמות מחולקים לקוביות */
+.progress {
+    height: .9rem;
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: var(--ms-lo) var(--ms-hi) var(--ms-hi) var(--ms-lo);
+    border-radius: 0;
+    padding: 1px;
+}
+
+[data-bs-theme="dark"] .progress {
+    background-color: #1a0f11;
+}
+
+.progress-bar {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(90deg, var(--ms-pink) 0 7px, transparent 7px 9px);
+}
+
+.w-label {
+    min-width: 3.5rem;
+}
+
+.num {
+    font-family: 'VT323', monospace;
+    font-size: 1.15rem;
+    min-width: 1.5rem;
+}
+
+/* ===== פתיחה ===== */
+.kicker {
+    font-weight: 700;
+    color: var(--ms-pink-dark);
+}
+
+/* מרקר ורוד מאחורי המילה */
+.hl {
+    white-space: nowrap;
+    background-color: var(--ms-pink-soft);
+    border: 2px dashed var(--ms-pink);
+    padding: 0 .3rem;
+    border-radius: 4px;
+}
+
+/* תמונה במסגרת לבנה עם כיתוב, כמו פולארויד */
+.polaroid {
+    background-color: #ffffff;
+    border: 2px solid var(--ms-frame);
+    padding: .6rem .6rem 0;
+    box-shadow: 5px 5px 0 var(--ms-pink);
+    transform: rotate(2deg);
+}
+
+    .polaroid img {
+        display: block;
+        width: 100%;
+    }
+
+    .polaroid figcaption {
+        text-align: center;
+        font-weight: 700;
+        color: #3d2422;
+        padding: .5rem 0 .6rem;
+    }
+
+/* מדבקה ירוקה נטויה על התמונה */
+.sticker {
+    font-family: 'Silkscreen', monospace;
+    font-weight: 700;
+    font-size: .95rem;
+    color: #3d2422;
+    background-color: var(--ms-lime);
+    border: 2px solid var(--ms-frame);
+    border-radius: 3px;
+    padding: .2rem .6rem;
+    transform: translate(-25%, -45%) rotate(-10deg);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, .25);
+}
+
+/* ===== כרטיסי פריטים בארון ===== */
+.item-card {
+    background-color: var(--ms-panel);
+    border: 2px solid var(--ms-frame);
+    border-radius: 4px;
+    box-shadow: inset 2px 2px 0 var(--ms-hi), 3px 3px 0 rgba(0, 0, 0, .18);
+    padding: .35rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Silkscreen', monospace;
+    font-size: .7rem;
+    padding: .1rem .2rem .35rem;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+    .item-head .dots {
+        border: 1px solid var(--ms-frame);
+        padding: 0 .25rem;
+        background-color: var(--ms-btn);
+    }
+
+.item-card .ratio {
+    border: 2px solid var(--ms-lo);
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
+.item-body {
+    padding: .5rem .2rem .2rem;
+    font-weight: 500;
+    font-size: .9rem;
+}
+
+.item-meta {
+    font-size: .78rem;
+    color: var(--ms-muted);
+}
+
+.star {
+    color: #f2b705;
+}
+
+/* ===== שורות ברשימה (איך זה עובד) ===== */
+.list-rows li {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .75rem 1rem;
+    border-bottom: 2px dotted var(--ms-lo);
+}
+
+    .list-rows li:last-child {
+        border-bottom: 0;
+    }
+
+.step-num {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'VT323', monospace;
+    font-size: 1.4rem;
+    background-color: var(--ms-lime);
+    color: #3d2422;
+    border: 2px solid var(--ms-frame);
+    border-radius: 3px;
+    box-shadow: inset 2px 2px 0 rgba(255, 255, 255, .6);
+}
+
+/* תגית ורודה קטנה */
+.pill {
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--ms-on-pink);
+    background-color: var(--ms-pink-soft);
+    border: 2px solid var(--ms-pink-dark);
+    border-radius: 3px;
+    padding: .15rem .55rem;
+    white-space: nowrap;
+}
+
+.pill-on {
+    background-color: var(--ms-lime);
+    color: #3d2422 !important;
+    border-color: var(--ms-frame);
+}
+
+[data-bs-theme="dark"] .pill:not(.pill-on) {
+    color: #fbe9f0;
+}
+
+/* ===== לוח השראה בסגנון פינטרסט (Masonry) =====
+   עמודות CSS: כל תמונה בגובה שלה, והן נערמות כמו בפינטרסט */
+.pin-board {
+    column-count: 2;
+    column-gap: .9rem;
+}
+
+@media (min-width: 768px) {
+    .pin-board {
+        column-count: 3;
+    }
+}
+
+.pin {
+    break-inside: avoid;
+    margin: 0 0 .9rem;
+    background-color: #ffffff;
+    border: 2px solid var(--ms-frame);
+    border-radius: 4px;
+    padding: .4rem;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, .2);
+    position: relative;
+}
+
+[data-bs-theme="dark"] .pin {
+    background-color: var(--ms-panel);
+}
+
+.pin img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--ms-lo);
+}
+
+/* כפתור "שמירה" שמופיע במעבר עכבר, כמו בפינטרסט */
+.pin::after {
+    content: "♥ שמירה";
+    position: absolute;
+    top: .8rem;
+    left: .8rem;
+    font-weight: 700;
+    font-size: .8rem;
+    color: var(--ms-on-pink);
+    background-color: var(--ms-pink);
+    border: 2px solid var(--ms-frame);
+    border-radius: 3px;
+    padding: .1rem .5rem;
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, .7);
+    opacity: 0;
+}
+
+.pin:hover::after {
+    opacity: 1;
+}
+
+.pin figcaption {
+    padding: .45rem .15rem .1rem;
+    font-size: .85rem;
+}
+
+    .pin figcaption strong {
+        display: block;
+    }
+
+    .pin figcaption span {
+        display: block;
+        font-size: .75rem;
+        color: var(--ms-muted);
+    }
+
+/* ===== חלון ההזמנה: הרקע עם העיגולים - רק כאן באתר ===== */
+.cta-win .win-body {
+    background-color: #ffffff;
+    background-image: url("../images/bg-circles.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+/* כרטיס לבן קטן מעל העיגולים, כדי שהטקסט יהיה קריא */
+.cta-card {
+    background-color: var(--ms-panel);
+    border: 2px solid var(--ms-frame);
+    border-radius: 4px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 4px 4px 0 var(--ms-lime);
+}
+
+/* קרדיט לתמונות */
+.credit {
+    color: var(--ms-muted);
+    text-align: center;
+    margin-top: .25rem;
+}
+
+/* ===== דפי הרשמה וכניסה ===== */
+.auth-img {
+    height: 120px;
+    width: auto;
+    background-color: #ffffff;
+    border: 2px solid var(--ms-frame);
+    border-radius: 4px;
+    padding: .35rem;
+    box-shadow: 3px 3px 0 var(--ms-pink);
+}
+
+.auth-section {
+    min-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+}
+
+    .auth-section > .container {
+        width: 100%;
+    }
+
+
+/* ---------- 5. הודעת השגיאה של Blazor ---------- */
+
+#blazor-error-ui {
+    background: #f6fbd9;
+    color: var(--ms-on-pink);
+    border-top: 3px solid #4a2c2a;
+    bottom: 0;
+    box-sizing: border-box;
+    display: none;
+    inset-inline: 0;
+    padding: .7rem 1.25rem;
+    position: fixed;
+    z-index: 1100;
+    font-weight: 700;
+}
+
+    #blazor-error-ui .reload {
+        margin-inline-start: .5rem;
+        color: #d63d86;
+    }
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        left: .75rem;
+        top: .5rem;
+    }
+
+.blazor-error-boundary {
+    background: #d63d86;
+    padding: 1rem;
+    color: #fff;
+}
+
+    .blazor-error-boundary::after {
+        content: "אופס, משהו השתבש.";
+    }

@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl" data-bs-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <ResourcePreloader />
+
+    @* מצב יום / לילה: נקבע לפני שהדף מצויר, כדי שלא יהבהב.
+       אם המשתמש כבר בחר - לוקחים מהדפדפן, אחרת לפי הגדרת המחשב *@
+    <script>
+            window.applyTheme = function () {
+                var t = null;
+                try { t = localStorage.getItem('theme'); } catch (e) { }
+                if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-bs-theme', t);
+            };
+            window.toggleTheme = function () {
+                var h = document.documentElement;
+                var t = h.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+                h.setAttribute('data-bs-theme', t);
+                try { localStorage.setItem('theme', t); } catch (e) { }
+            };
+            applyTheme();
+    </script>
+
+    @* 1. Bootstrap בגרסה לעברית (מימין לשמאל) *@
+    <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.rtl.min.css"]" />
+
+    @* 2. גופנים מ-Google Fonts *@
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&family=Silkscreen:wght@400;700&family=VT323&display=swap" />
+
+    @* 3. קובץ העיצוב שלנו - אחרון, כדי שינצח את Bootstrap *@
+    <link rel="stylesheet" href="@Assets["css/site.css"]" />
+    <link rel="stylesheet" href="@Assets["View.styles.css"]" />
+
+    <ImportMap />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <HeadOutlet />
+</head>
+
+<body>
+    <Routes />
+    <ReconnectModal />
+    <script src="@Assets["_framework/blazor.web.js"]"></script>
+    @* אחרי מעבר בין דפים Blazor מעדכן את הדף - מחילים שוב את המצב שנבחר *@
+    <script>
+            Blazor.addEventListener('enhancedload', applyTheme);
+    </script>
+</body>
+
+</html>
