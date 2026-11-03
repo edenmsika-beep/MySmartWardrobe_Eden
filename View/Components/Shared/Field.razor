@@ -10,6 +10,7 @@
         }
     </label>
     <input id="@Id" type="@Type" dir="@Dir" placeholder="@Placeholder"
+           autocomplete="@(Type == "password" ? "new-password" : "off")"
            class="form-control form-control-lg @(string.IsNullOrEmpty(Error) ? "" : "is-invalid")"
            value="@Value" @oninput="OnInput" />
     @if (!string.IsNullOrEmpty(Error))

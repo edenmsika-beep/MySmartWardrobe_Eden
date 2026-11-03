@@ -6,6 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+// הכתובת של ה-API, מקובץ ההגדרות
+string apiBaseUrl = builder.Configuration["ApiBaseUrl"]
+    ?? throw new InvalidOperationException("ApiBaseUrl not found in appsettings.json.");
+
+// רישום HttpClient שכבר מכיר את כתובת ה-API
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiBaseUrl) });
+
 
 var app = builder.Build();
 

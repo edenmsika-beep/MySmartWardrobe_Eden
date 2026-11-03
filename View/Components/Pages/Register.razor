@@ -1,5 +1,9 @@
 @page "/register"
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@using System.Net.Mail
+@using Model
+@inject HttpClient Http
+@inject NavigationManager Navigation
 
 <PageTitle>הרשמה | MySmartWardrobe</PageTitle>
 
@@ -18,27 +22,35 @@
                         <img src="@Assets["images/item-white-dress.jpg"]" alt="שמלה לבנה על קולב" class="auth-img d-block mx-auto mb-3" />
                         <h1 class="h2 mb-4 text-center">פותחים ארון חדש ✨</h1>
 
-                        @if (done)
+                        @* הודעת שגיאה כללית (שרת לא זמין, הרשמה נכשלה) *@
+                        @if (errorMessage != null)
                         {
-                            <div class="win-msg text-center">
-                                <p class="mb-2">♥ איזה כיף שהצטרפת, <strong>@username</strong>!</p>
-                                <a href="/" class="btn btn-primary">לדף הבית</a>
+                            <div class="alert alert-danger" role="alert">@errorMessage</div>
+                        }
+
+                        @if (isRegistered)
+                        {
+                            @* הצלחה: ספירה לאחור ומעבר לדף הכניסה *@
+                            <div class="win-msg text-center" role="status">
+                                <p class="mb-1">♥ <strong>איזה כיף שהצטרפת, @username!</strong></p>
+                                <p class="mb-0">עוברים לדף הכניסה בעוד @secondsLeft שניות...</p>
                             </div>
                         }
                         else
                         {
-                            <form @onsubmit="SignUp">
-                                <Field Id="reg-username" Label="שם משתמש" Placeholder="למשל eden_style"
-                                       @bind-Value="username" Error="@usernameError" />
-                                <Field Id="reg-email" Label="אימייל" Type="email" Dir="ltr" Placeholder="name@example.com"
-                                       @bind-Value="email" Error="@emailError" />
-                                <Field Id="reg-password" Label="סיסמה" Type="password" Dir="ltr"
-                                       @bind-Value="password" Error="@passwordError" />
-                                <Field Id="reg-confirm" Label="אימות סיסמה" Type="password" Dir="ltr"
-                                       @bind-Value="confirm" Error="@confirmError" />
+                            <Field Id="reg-username" Label="שם משתמש" Placeholder="למשל eden_style"
+                                   @bind-Value="username" Error="@usernameError" />
+                            <Field Id="reg-email" Label="אימייל" Type="email" Dir="ltr" Placeholder="name@example.com"
+                                   @bind-Value="email" Error="@emailError" />
+                            <Field Id="reg-password" Label="סיסמה" Type="password" Dir="ltr"
+                                   @bind-Value="password" Error="@passwordError" />
+                            <Field Id="reg-confirm" Label="אימות סיסמה" Type="password" Dir="ltr"
+                                   @bind-Value="confirmPassword" Error="@confirmError" />
 
-                                <button type="submit" class="btn btn-primary btn-lg w-100 mt-2">♥ נרשמים</button>
-                            </form>
+                            <button type="button" class="btn btn-primary btn-lg w-100 mt-2"
+                                    disabled="@(isBusy || isRegistered)" @onclick="RegisterAsync">
+                                @(isBusy ? "בודקים..." : "♥ נרשמים")
+                            </button>
 
                             <p class="text-center small mt-4 mb-0">
                                 כבר יש לך חשבון? <a href="/login" class="fw-semibold">כניסה</a>
@@ -56,7 +68,7 @@
     private string username = "";
     private string email = "";
     private string password = "";
-    private string confirm = "";
+    private string confirmPassword = "";
 
     // הודעת שגיאה לכל שדה
     private string usernameError = "";
@@ -64,18 +76,81 @@
     private string passwordError = "";
     private string confirmError = "";
 
+    // הודעת שגיאה כללית (null = אין שגיאה)
+    private string? errorMessage = null;
+
+    // true בזמן שהבקשה בדרך - הכפתור מושבת
+    private bool isBusy = false;
+
     // true אחרי הרשמה מוצלחת
-    private bool done = false;
+    private bool isRegistered = false;
 
-    private void SignUp()
+    // כמה שניות נשארו עד המעבר לדף הכניסה
+    private int secondsLeft = 5;
+
+    private async Task RegisterAsync()
     {
-        usernameError = username.Trim().Length < 3 ? "לפחות 3 תווים" : "";
-        emailError = !email.Contains('@') || !email.Contains('.') ? "האימייל הזה לא נראה תקין" : "";
-        passwordError = password.Length < 6 ? "לפחות 6 תווים" : "";
-        confirmError = confirm != password ? "הסיסמאות לא תואמות" : "";
+        errorMessage = null;
 
-        // אין שגיאות -> מציגים הודעת הצלחה
-        // (בגרסה הבאה כאן שולחים את הנתונים ל-API)
-        done = usernameError == "" && emailError == "" && passwordError == "" && confirmError == "";
+        // בדיקות קלט, לפני שפונים לשרת
+        usernameError = string.IsNullOrWhiteSpace(username) ? "שכחת את שם המשתמש" : "";
+        emailError = string.IsNullOrWhiteSpace(email) ? "שכחת את האימייל"
+                   : !MailAddress.TryCreate(email.Trim(), out _) ? "האימייל הזה לא נראה תקין" : "";
+        passwordError = string.IsNullOrWhiteSpace(password) ? "שכחת את הסיסמה" : "";
+        confirmError = string.IsNullOrWhiteSpace(confirmPassword) ? "צריך לאמת את הסיסמה"
+                     : password != confirmPassword ? "הסיסמאות לא תואמות" : "";
+
+        if (usernameError != "" || emailError != "" || passwordError != "" || confirmError != "")
+            return;
+
+        isBusy = true;
+        try
+        {
+            // שלב 1, קריאה: שתי בקשות ל-Controller
+            bool usernameExists = await Http.GetFromJsonAsync<bool>(
+                $"api/users/exists/{Uri.EscapeDataString(username.Trim())}");
+            if (usernameExists)
+            {
+                usernameError = "שם המשתמש כבר תפוס. בחרו שם אחר";
+                return;
+            }
+
+            bool emailExists = await Http.GetFromJsonAsync<bool>(
+                $"api/users/email-exists/{Uri.EscapeDataString(email.Trim())}");
+            if (emailExists)
+            {
+                emailError = "האימייל הזה כבר רשום במערכת";
+                return;
+            }
+
+            // שלב 2, כתיבה: בקשה אחת ל-Controller
+            // RoleName מקבל ערך רק כדי שה-API לא ידחה שדה ריק. התפקיד עצמו נקבע ב-API ("User")
+            User newUser = new User(username.Trim(), email.Trim(), password) { RoleName = "User" };
+            HttpResponseMessage response = await Http.PostAsJsonAsync("api/users", newUser);
+            if (!response.IsSuccessStatusCode)
+            {
+                errorMessage = "ההרשמה נכשלה. נסו שוב";
+                return;
+            }
+        }
+        catch (HttpRequestException)
+        {
+            errorMessage = "השרת לא זמין כרגע. נסו שוב בעוד רגע";
+            return;
+        }
+        finally
+        {
+            isBusy = false;
+        }
+
+        // הצלחה: ספירה לאחור ומעבר לדף הכניסה
+        isRegistered = true;
+        while (secondsLeft > 0)
+        {
+            StateHasChanged();
+            await Task.Delay(1000);
+            secondsLeft--;
+        }
+        Navigation.NavigateTo("login");
     }
 }

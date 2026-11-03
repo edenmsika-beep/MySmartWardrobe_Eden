@@ -1,9 +1,5 @@
 @API_HostAddress = http://localhost:5161
 
-GET {{API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
 # ===== משתמשים =====
 
 # כל המשתמשים
@@ -18,18 +14,13 @@ Accept: application/json
 
 ###
 
-# האם שם מלא קיים
-GET {{API_HostAddress}}/api/users/exists/Daniel%20Cohen
-
-###
-
-# האם שם מלא קיים
-GET {{API_HostAddress}}/api/users/exists/Dana%20Staff
+# האם שם משתמש קיים
+GET {{API_HostAddress}}/api/users/exists/dana_c
 
 ###
 
 # האם אימייל קיים
-GET {{API_HostAddress}}/api/users/email-exists/admin@example.com
+GET {{API_HostAddress}}/api/users/email-exists/dana@example.com
 
 ###
 
@@ -38,14 +29,14 @@ GET {{API_HostAddress}}/api/users/count-by-role
 
 ###
 
-# הוספת משתמש בדיקה (תפקיד ברירת מחדל: Customer)
+# הוספת משתמש בדיקה
 POST {{API_HostAddress}}/api/users
 Content-Type: application/json
 
 {
-  "fullName": "Test User",
+  "username": "test_user",
   "email": "test.user@example.com",
-  "password": "Test123!"
+  "passwordHash": "Test123!"
 }
 
 ###
@@ -55,46 +46,17 @@ POST {{API_HostAddress}}/api/users/login
 Content-Type: application/json
 
 {
-  "fullName": "System Admin",
-  "password": "Test123!"
+  "username": "admin1",
+  "passwordHash": "AdminPass123!"
 }
 
 ###
 
-# התחברות עם סיסמה שגויה
+# התחברות עם סיסמה שגויה (מחזיר 401)
 POST {{API_HostAddress}}/api/users/login
 Content-Type: application/json
 
 {
-  "fullName": "System Admin",
-  "password": "wrong"
+  "username": "admin1",
+  "passwordHash": "wrong"
 }
-
-###
-
-# שינוי תפקיד של משתמש הבדיקה
-# יש להחליף את 11 במזהה שהוחזר בהוספת המשתמש
-PUT {{API_HostAddress}}/api/users/11/role?roleName=Staff
-
-###
-
-# עדכון סיסמה
-PUT {{API_HostAddress}}/api/users/11/password
-Content-Type: application/json
-
-"NewPass123!"
-
-###
-
-# עדכון אימייל
-PUT {{API_HostAddress}}/api/users/11/email
-Content-Type: application/json
-
-"new.test.user@example.com"
-
-###
-
-# מחיקת משתמש הבדיקה
-DELETE {{API_HostAddress}}/api/users/11
-
-###

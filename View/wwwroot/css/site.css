@@ -243,6 +243,15 @@ h1, h2, h3, h4, h5, h6,
     font-weight: 500;
 }
 
+/* הודעת שגיאה כללית בטופס (שרת לא זמין וכו') */
+.alert-danger {
+    background-color: var(--ms-pink-soft);
+    color: var(--ms-ink);
+    border: 2px solid #e0245e;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
 /* הודעות האימות של טפסי Blazor */
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
